@@ -2,27 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Understand Knuth's Inversion Algorithm</title>
+<title>Knuth's Inversion Algorithm</title>
 <link rel="stylesheet" type="text/css" href="slides/slides.css"></head>
 <body>
-<h1>Understand Knuth's Inversion Algorithm</h1>
+<h1>Knuth's Inversion Algorithm</h1>
 <div class="slides">
 <div>
 <div>
-<h1>Understand Knuth's Inversion Algorithm</h1>
+<h1>Knuth's Inversion Algorithm</h1>
 </div>
+<ul><li>
+dissecting the in place inversion Algorithm from  Knuth's Art of Computer Programming
+</li></ul>
 </div>
 <div><div>
 <code>
 <span class="macro">@Def(<span class="name">file: inverse.cpp</span>)</span><br/>
 <span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">iostream</span>&gt;<br/>
 <span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">cassert</span>&gt;<br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">cstring</span>&gt;<br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">globals</span>)</span>;<br/>
 <span class="in1"></span><span class="type">int</span> <span class="fn">main</span>() {<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">main</span>)</span><br/>
 <span class="in1"></span>};<br/>
 <span class="macro">@End(<span class="name">file: inverse.cpp</span>)</span><br/>
 </code></div>
+<ul><li>
+simple C++ program
+</li><li>
+implement unit-tests with assertions
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -37,6 +46,11 @@
 <span class="in2"></span>}<br/>
 <span class="macro">@end(<span class="name">globals</span>)</span><br/>
 </code></div>
+<ul><li>
+permutation is simple array
+</li><li>
+initialize identity
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -45,17 +59,28 @@
 <span class="in2"></span><span class="type">bool</span> <span class="fn">is_identity</span>(<br/>
 <span class="in3"></span><span class="type">const</span> <span class="type">int</span> (&amp;<span class="var">p</span>)[<span class="var">N</span>]<br/>
 <span class="in2"></span>) {<br/>
-<span class="in3"></span><span class="keyword">for</span> (<br/>
-<span class="in4"></span><span class="type">int</span> <span class="var">i</span> { <span class="num">1</span> }; <span class="var">i</span> &lt;= <span class="var">N</span>; ++<span class="var">i</span><br/>
-<span class="in3"></span>) {<br/>
-<span class="in4"></span><span class="keyword">if</span> (<span class="var">p</span>[<span class="var">i</span> - <span class="num">1</span>] != <span class="var">i</span>) {<br/>
-<span class="in5"></span><span class="keyword">return</span> <span class="num">false</span>;<br/>
-<span class="in4"></span>}<br/>
-<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="macro">@put(<span class="name">is identity</span>)</span>;<br/>
 <span class="in3"></span><span class="keyword">return</span> <span class="num">true</span>;<br/>
 <span class="in2"></span>}<br/>
 <span class="macro">@end(<span class="name">globals</span>)</span><br/>
 </code></div>
+<ul><li>
+check identity
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">is identity</span>)</span><br/>
+<span class="in1"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">i</span> { <span class="num">1</span> }; <span class="var">i</span> &lt;= <span class="var">N</span>; ++<span class="var">i</span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">p</span>[<span class="var">i</span> - <span class="num">1</span>] != <span class="var">i</span>) {<br/>
+<span class="in3"></span><span class="keyword">return</span> <span class="num">false</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">is identity</span>)</span><br/>
+</code></div>
+<ul><li>
+check identity
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -63,6 +88,9 @@
 <span class="in1"></span><span class="macro">@put(<span class="name">unit-tests</span>)</span><br/>
 } <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
+<ul><li>
+own scope for unit-tests
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -72,6 +100,9 @@
 <span class="in1"></span><span class="fn">assert</span>(<span class="fn">is_identity</span>(<span class="var">p</span>));<br/>
 } <span class="macro">@end(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
+<ul><li>
+check that <code><span class="fn">identity</span></code> and <code><span class="fn">is_identity</span></code> work
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -81,16 +112,36 @@
 <span class="in3"></span><span class="type">int</span> (&amp;<span class="var">p</span>)[<span class="var">N</span>],<br/>
 <span class="in3"></span><span class="type">const</span> <span class="type">int</span> (&amp;<span class="var">o</span>)[<span class="var">N</span>]<br/>
 <span class="in2"></span>) {<br/>
-<span class="in3"></span><span class="fn">assert</span>(&amp;<span class="var">p</span> != &amp;<span class="var">o</span>);<br/>
-<span class="in3"></span><span class="keyword">for</span> (<br/>
-<span class="in4"></span><span class="type">int</span> <span class="var">i</span> { <span class="num">1</span> }; <span class="var">i</span> &lt;= <span class="var">N</span>; ++<span class="var">i</span><br/>
-<span class="in3"></span>) {<br/>
-<span class="in4"></span><span class="var">p</span>[<span class="var">i</span> - <span class="num">1</span>] =<br/>
-<span class="in5"></span><span class="var">o</span>[<span class="var">p</span>[<span class="var">i</span> - <span class="num">1</span>] - <span class="num">1</span>];<br/>
-<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="macro">@put(<span class="name">mult</span>)</span>;<br/>
 <span class="in2"></span>}<br/>
 <span class="macro">@end(<span class="name">globals</span>)</span><br/>
 </code></div>
+<ul><li>
+multiply two permutations
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">mult</span>)</span><br/>
+<span class="in1"></span><span class="fn">assert</span>(&amp;<span class="var">p</span> != &amp;<span class="var">o</span>);<br/>
+<span class="macro">@end(<span class="name">mult</span>)</span><br/>
+</code></div>
+<ul><li>
+both arguments must be different
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">mult</span>)</span><br/>
+<span class="in1"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">i</span> { <span class="num">1</span> }; <span class="var">i</span> &lt;= <span class="var">N</span>; ++<span class="var">i</span>) {<br/>
+<span class="in2"></span><span class="var">p</span>[<span class="var">i</span> - <span class="num">1</span>] =<br/>
+<span class="in3"></span><span class="var">o</span>[<span class="var">p</span>[<span class="var">i</span> - <span class="num">1</span>] - <span class="num">1</span>];<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">mult</span>)</span><br/>
+</code></div>
+<ul><li>
+multiplication is the application of the first permutation after the  second one
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -103,6 +154,9 @@
 <span class="in1"></span><span class="fn">assert</span>(<span class="fn">is_identity</span>(<span class="var">p</span>));<br/>
 } <span class="macro">@end(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
+<ul><li>
+check that multiplication works
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -113,6 +167,9 @@
 <span class="in2"></span>}<br/>
 <span class="macro">@end(<span class="name">globals</span>)</span><br/>
 </code></div>
+<ul><li>
+in place invert
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -121,28 +178,88 @@
 <span class="in1"></span><span class="keyword">while</span> (<span class="var">m</span> &gt; <span class="num">0</span>) {<br/>
 <span class="in2"></span><span class="type">int</span> <span class="var">i</span> = <span class="var">p</span>[<span class="var">m</span> - <span class="num">1</span>];<br/>
 <span class="in2"></span><span class="keyword">while</span> (<span class="var">i</span> &gt; <span class="num">0</span>) {<br/>
-<span class="in3"></span><span class="var">p</span>[<span class="var">m</span> - <span class="num">1</span>] = <span class="var">j</span>; <span class="var">j</span> = -<span class="var">m</span>;<br/>
-<span class="in3"></span><span class="var">m</span> = <span class="var">i</span>; <span class="var">i</span> = <span class="var">p</span>[<span class="var">m</span> - <span class="num">1</span>];<br/>
-<span class="in3"></span><span class="keyword">if</span> (<span class="var">i</span> &lt; <span class="num">0</span>) {<br/>
-<span class="in4"></span><span class="var">i</span> = <span class="var">j</span>; <span class="keyword">break</span>;<br/>
-<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="macro">@put(<span class="name">inner loop</span>)</span>;<br/>
 <span class="in2"></span>}<br/>
 <span class="in2"></span><span class="var">p</span>[<span class="var">m</span> - <span class="num">1</span>] = -<span class="var">i</span>;<br/>
 <span class="in2"></span>--<span class="var">m</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">inv</span>)</span><br/>
 </code></div>
+<ul><li>
+perform inversion in place
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">inner loop</span>)</span><br/>
+<span class="in1"></span><span class="var">p</span>[<span class="var">m</span> - <span class="num">1</span>] = <span class="var">j</span>; <span class="var">j</span> = -<span class="var">m</span>;<br/>
+<span class="in1"></span><span class="var">m</span> = <span class="var">i</span>; <span class="var">i</span> = <span class="var">p</span>[<span class="var">m</span> - <span class="num">1</span>];<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">i</span> &lt; <span class="num">0</span>) {<br/>
+<span class="in2"></span><span class="var">i</span> = <span class="var">j</span>; <span class="keyword">break</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">inner loop</span>)</span><br/>
+</code></div>
+<ul><li>
+perform inversion in place
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="keyword">template</span>&lt;<span class="type">int</span> <span class="var">N</span>&gt;<br/>
+<span class="in2"></span><span class="type">bool</span> <span class="fn">is_inversion</span>(<br/>
+<span class="in3"></span><span class="type">const</span> <span class="type">int</span> (&amp;<span class="var">p</span>)[<span class="var">N</span>],<br/>
+<span class="in3"></span><span class="type">const</span> <span class="type">int</span> (&amp;<span class="var">i</span>)[<span class="var">N</span>]<br/>
+<span class="in2"></span>) {<br/>
+<span class="in3"></span><span class="type">int</span> <span class="var">t</span>[<span class="var">N</span>];<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="fn">memcpy</span>(<span class="var">t</span>, <span class="var">p</span>, <span class="fn">sizeof</span>(<span class="var">p</span>));<br/>
+<span class="in3"></span><span class="fn">mult</span>(<span class="var">t</span>, <span class="var">i</span>);<br/>
+<span class="in3"></span><span class="keyword">return</span> <span class="fn">is_identity</span>(<span class="var">t</span>);<br/>
+<span class="in2"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+is <code><span class="var">i</span></code> an inversion of <code><span class="var">p</span></code>?
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="keyword">template</span>&lt;<span class="type">int</span> <span class="var">N</span>&gt; <span class="type">void</span> <span class="fn">check_inversion</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">int</span> (&amp;<span class="var">p</span>)[<span class="var">N</span>]<br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">i</span>[<span class="var">N</span>];<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="fn">memcpy</span>(<span class="var">i</span>, <span class="var">p</span>, <span class="fn">sizeof</span>(<span class="var">p</span>));<br/>
+<span class="in2"></span><span class="fn">inv</span>(<span class="var">i</span>);<br/>
+<span class="in2"></span><span class="fn">assert</span>(<span class="fn">is_inversion</span>(<span class="var">p</span>, <span class="var">i</span>));<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+check that <code><span class="var">p</span></code> can be inverted
+</li></ul>
 </div>
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">unit-tests</span>)</span> {<br/>
 <span class="in1"></span><span class="type">int</span> <span class="var">p</span>[<span class="num">4</span>] { <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">1</span> };<br/>
-<span class="in1"></span><span class="type">int</span> <span class="var">o</span>[<span class="num">4</span>] { <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">1</span> };<br/>
-<span class="in1"></span><span class="fn">inv</span>(<span class="var">o</span>);<br/>
-<span class="in1"></span><span class="fn">mult</span>(<span class="var">p</span>, <span class="var">o</span>);<br/>
-<span class="in1"></span><span class="fn">assert</span>(<span class="fn">is_identity</span>(<span class="var">p</span>));<br/>
+<span class="in1"></span><span class="fn">check_inversion</span>(<span class="var">p</span>);<br/>
 } <span class="macro">@end(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
+<ul><li>
+invert simple permutation
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">int</span> <span class="var">p</span>[<span class="num">4</span>]; <span class="fn">identity</span>(<span class="var">p</span>);<br/>
+<span class="in1"></span><span class="fn">check_inversion</span>(<span class="var">p</span>);<br/>
+} <span class="macro">@end(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+<ul><li>
+invert identity
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -152,17 +269,20 @@
 <span class="in1"></span><span class="fn">assert</span>(<span class="fn">is_identity</span>(<span class="var">p</span>));<br/>
 } <span class="macro">@end(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
+<ul><li>
+invert of identity is identity
+</li></ul>
 </div>
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">unit-tests</span>)</span> {<br/>
 <span class="in1"></span><span class="type">int</span> <span class="var">p</span>[<span class="num">4</span>] { <span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span>, <span class="num">1</span> };<br/>
-<span class="in1"></span><span class="type">int</span> <span class="var">o</span>[<span class="num">4</span>] { <span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span>, <span class="num">1</span> };<br/>
-<span class="in1"></span><span class="fn">inv</span>(<span class="var">o</span>);<br/>
-<span class="in1"></span><span class="fn">mult</span>(<span class="var">p</span>, <span class="var">o</span>);<br/>
-<span class="in1"></span><span class="fn">assert</span>(<span class="fn">is_identity</span>(<span class="var">p</span>));<br/>
+<span class="in1"></span><span class="fn">check_inversion</span>(<span class="var">p</span>);<br/>
 } <span class="macro">@end(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
+<ul><li>
+invert two runs
+</li></ul>
 </div>
 </body>
 </html>
